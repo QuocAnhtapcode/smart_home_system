@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/your_home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="YOUR HOME"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/temperature"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="Temperature: 30°C / 203K"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@id/your_home" />
+
+    <TextView
+        android:id="@+id/humidity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="Humidity: 69%"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@+id/temperature" />
+
+    <TextView
+        android:id="@+id/air"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="Air pollution levels: 69"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@id/humidity" />
+
+    <TextView
+        android:id="@+id/noise"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="Noise pollution levels: 69 dB"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@id/air" />
+
+    <TextView
+        android:id="@+id/light_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_light_on"
+        android:gravity="bottom"
+        android:scaleX="0.5"
+        android:scaleY="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/noise" />
+
+    <TextView
+        android:id="@+id/light_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LIGHT"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/light_switch"
+        app:layout_constraintStart_toStartOf="@id/light_switch"
+        app:layout_constraintTop_toBottomOf="@id/light_switch" />
+
+    <TextView
+        android:id="@+id/fan_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_light_on"
+        android:gravity="bottom"
+        android:scaleX="0.5"
+        android:scaleY="0.5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/noise" />
+
+    <TextView
+        android:id="@+id/fan_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="FAN"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/fan_switch"
+        app:layout_constraintStart_toStartOf="@id/fan_switch"
+        app:layout_constraintTop_toBottomOf="@id/fan_switch" />
+
+    <TextView
+        android:id="@+id/ac_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_light_on"
+        android:gravity="bottom"
+        android:scaleX="0.5"
+        android:scaleY="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/light_text" />
+
+    <TextView
+        android:id="@+id/ac_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="AIR CONDITIONER"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/ac_switch"
+        app:layout_constraintStart_toStartOf="@id/ac_switch"
+        app:layout_constraintTop_toBottomOf="@id/ac_switch" />
+
+    <TextView
+        android:id="@+id/ap_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_light_on"
+        android:gravity="bottom"
+        android:scaleX="0.5"
+        android:scaleY="0.5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fan_text" />
+
+    <TextView
+        android:id="@+id/ap_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="AIR PURIFIER"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/ap_switch"
+        app:layout_constraintStart_toStartOf="@id/ap_switch"
+        app:layout_constraintTop_toBottomOf="@id/ap_switch" />
+</androidx.constraintlayout.widget.ConstraintLayout>
