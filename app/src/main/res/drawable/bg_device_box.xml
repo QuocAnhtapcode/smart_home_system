@@ -1,0 +1,17 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Nền của nút -->
+    <solid android:color="@color/brown" /> <!-- Màu nền của nút, có thể thay đổi -->
+
+    <!-- Đường viền của nút -->
+    <stroke android:width="0dp" android:color="#000000"/> <!-- Độ dày và màu của đường viền -->
+
+    <!-- Bo tròn góc -->
+    <corners android:radius="32dp" /> <!-- Bo tròn 16dp, có thể thay đổi -->
+
+    <!-- Padding bên trong nút -->
+    <padding
+        android:left="8dp"
+        android:top="8dp"
+        android:right="8dp"
+        android:bottom="8dp" />
+</shape>

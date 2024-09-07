@@ -50,9 +50,6 @@ class ChartAdapter : ListAdapter<Chart, ChartAdapter.ViewHolder>(ChartDiffCallBa
                     dataSet.colors = colors
                 }
             }
-
-
-
             val xAxis = barChart.xAxis
             xAxis.textSize = 16f
             xAxis.position = XAxis.XAxisPosition.BOTTOM
@@ -107,7 +104,6 @@ class ChartAdapter : ListAdapter<Chart, ChartAdapter.ViewHolder>(ChartDiffCallBa
         override fun areContentsTheSame(oldItem: Chart, newItem: Chart): Boolean {
             return oldItem.label == newItem.label
         }
-
         override fun areItemsTheSame(oldItem: Chart, newItem: Chart): Boolean {
             return oldItem === newItem
         }

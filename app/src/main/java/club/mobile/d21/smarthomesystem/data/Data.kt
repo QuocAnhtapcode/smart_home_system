@@ -1,9 +1,14 @@
 package club.mobile.d21.smarthomesystem.data
 
+import java.sql.Date
+import java.sql.Time
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+
 object Data {
     var isLightOn = false
     var isAirConditionerOn = false
-    var isAirFilterOn = false
+    var isAirPurifierOn = false
     var isFanOn = false
     val temperatureChart = Chart(
         "Temperature (°C)",
@@ -24,5 +29,9 @@ object Data {
     val noisePollutionLevel = Chart(
         "Noise pollution level (dB)",
         mutableListOf(0f, 25.5f, 40.5f, 27.2f, 24.1f, 30f, 32f, 29f, 26.5f, 21f, 18f)
+    )
+    val history = mutableListOf(
+        History("Light",true, LocalDateTime.of(2024, 8, 28, 15, 30, 45)),
+        History("Fan",false, LocalDateTime.of(2024, 8, 28, 15, 30, 50))
     )
 }

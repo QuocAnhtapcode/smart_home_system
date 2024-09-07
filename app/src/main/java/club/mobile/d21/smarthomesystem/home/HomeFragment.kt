@@ -18,21 +18,7 @@ class HomeFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        if(Data.isLightOn){
-            binding.lightSwitch.setBackgroundResource(R.drawable.ic_light_on)
-        }else{
-            binding.lightSwitch.setBackgroundResource(R.drawable.ic_light_off)
-        }
-        binding.lightSwitch.setOnClickListener {
-            if(Data.isLightOn){
-                Data.isLightOn = false
-                binding.lightSwitch.setBackgroundResource(R.drawable.ic_light_off)
-            }else{
-                Data.isLightOn = true
-                binding.lightSwitch.setBackgroundResource(R.drawable.ic_light_on)
-            }
 
-        }
         return binding.root
     }
 
