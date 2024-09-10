@@ -1,13 +1,13 @@
-package club.mobile.d21.smarthomesystem.home
+package club.mobile.d21.smarthomesystem.fragment_home
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import club.mobile.d21.smarthomesystem.R
-import club.mobile.d21.smarthomesystem.data.Data
+import androidx.recyclerview.widget.LinearLayoutManager
 import club.mobile.d21.smarthomesystem.databinding.FragmentHomeBinding
+import club.mobile.d21.smarthomesystem.model.TestData
 
 class HomeFragment: Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -18,7 +18,11 @@ class HomeFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-
+        val recyclerView = binding.recyclerView
+        val adapter = ItemHomeAdapter()
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        adapter.submitList(TestData.itemHome)
         return binding.root
     }
 

@@ -1,4 +1,4 @@
-package club.mobile.d21.smarthomesystem.history
+package club.mobile.d21.smarthomesystem.fragment_device_history
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,24 +6,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import club.mobile.d21.smarthomesystem.data.Data
-import club.mobile.d21.smarthomesystem.databinding.FragmentHistoryBinding
+import club.mobile.d21.smarthomesystem.databinding.FragmentDeviceHistoryBinding
+import club.mobile.d21.smarthomesystem.model.TestData
 
-class HistoryFragment: Fragment() {
-    private var _binding: FragmentHistoryBinding? = null
+class DeviceHistoryFragment: Fragment() {
+    private var _binding: FragmentDeviceHistoryBinding? = null
     private val binding get() = _binding!!
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentHistoryBinding.inflate(inflater,container,false)
+        _binding = FragmentDeviceHistoryBinding.inflate(inflater,container,false)
         val recyclerView = binding.historyList
-        val adapter = HistoryAdapter()
+        val adapter = DeviceHistoryAdapter()
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
-        adapter.submitList(Data.history)
+        adapter.submitList(TestData.deviceHistoryList)
         return binding.root
     }
     override fun onDestroyView() {

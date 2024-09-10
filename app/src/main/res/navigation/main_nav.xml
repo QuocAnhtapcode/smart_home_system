@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/fragment_home"
-        android:name="club.mobile.d21.smarthomesystem.home.HomeFragment"
+        android:name="club.mobile.d21.smarthomesystem.fragment_\home.HomeFragment"
         android:label="Home"
         tools:layout="@layout/fragment_home">
         <action
@@ -22,7 +22,7 @@
     </fragment>
     <fragment
         android:id="@+id/fragment_detail"
-        android:name="club.mobile.d21.smarthomesystem.detail.DetailFragment"
+        android:name="club.mobile.d21.smarthomesystem.fragment_detail.DetailFragment"
         android:label="Detail"
         tools:layout="@layout/fragment_detail">
         <action
@@ -37,9 +37,9 @@
     </fragment>
     <fragment
         android:id="@+id/fragment_history"
-        android:name="club.mobile.d21.smarthomesystem.history.HistoryFragment"
+        android:name="club.mobile.d21.smarthomesystem.fragment_device_history.DeviceHistoryFragment"
         android:label="History"
-        tools:layout="@layout/fragment_history">
+        tools:layout="@layout/fragment_device_history">
         <action
             android:id="@+id/history_to_home"
             app:destination="@id/fragment_home" />
@@ -52,7 +52,7 @@
     </fragment>
     <fragment
         android:id="@+id/fragment_profile"
-        android:name="club.mobile.d21.smarthomesystem.profile.ProfileFragment"
+        android:name="club.mobile.d21.smarthomesystem.fragment_profile.ProfileFragment"
         android:label="Profile"
         tools:layout="@layout/fragment_profile">
         <action

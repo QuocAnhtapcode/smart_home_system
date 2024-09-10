@@ -59,4 +59,6 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
 
     implementation (libs.mpandroidchart)
+
+    implementation("androidx.paging:paging-runtime:3.2.2")
 }

@@ -1,4 +1,4 @@
-package club.mobile.d21.smarthomesystem.data
+package club.mobile.d21.smarthomesystem.model.chart
 
 data class Chart(
     val label: String,
