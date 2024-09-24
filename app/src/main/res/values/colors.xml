@@ -27,4 +27,8 @@
     <color name="brown">#9A7265</color>
     <color name="transparent">#00000000</color>
 
+    <color name="dark_blue">#001F3F</color>
+    <color name="blue">#0074D9</color>
+    <color name="light_blue">#7FDBFF</color>
+    <color name="light_yellow">#FFDC00</color>
 </resources>

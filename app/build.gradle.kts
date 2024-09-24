@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -60,5 +61,7 @@ dependencies {
 
     implementation (libs.mpandroidchart)
 
-    implementation("androidx.paging:paging-runtime:3.2.2")
+    implementation(platform(libs.firebase.bom))
+    implementation (libs.google.firebase.database.ktx)
+    implementation (libs.firebase.auth.ktx)
 }

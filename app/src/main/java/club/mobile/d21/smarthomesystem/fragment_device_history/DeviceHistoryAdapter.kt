@@ -8,11 +8,12 @@ import club.mobile.d21.smarthomesystem.model.device.DeviceHistory
 import club.mobile.d21.smarthomesystem.util.DeviceHistoryDiffCallback
 import club.mobile.d21.smarthomesystem.viewholder.DeviceHistoryViewHolder
 
-class DeviceHistoryAdapter: ListAdapter<DeviceHistory, DeviceHistoryViewHolder>(
-    DeviceHistoryDiffCallback()
-) {
+class DeviceHistoryAdapter : ListAdapter<Pair<Long, DeviceHistory>, DeviceHistoryViewHolder>(DeviceHistoryDiffCallback()) {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DeviceHistoryViewHolder {
-        return DeviceHistoryViewHolder.from(parent)
+        val binding =
+            ItemDeviceHistoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return DeviceHistoryViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: DeviceHistoryViewHolder, position: Int) {

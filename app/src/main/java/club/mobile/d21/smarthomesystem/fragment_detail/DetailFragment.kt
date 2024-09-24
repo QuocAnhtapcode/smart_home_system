@@ -5,8 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import club.mobile.d21.smarthomesystem.model.TestData
 import club.mobile.d21.smarthomesystem.databinding.FragmentDetailBinding
 
 class DetailFragment : Fragment() {

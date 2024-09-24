@@ -1,8 +1,6 @@
 package club.mobile.d21.smarthomesystem.model.device
 
-import java.time.LocalDateTime
-
 data class DeviceHistory(
-    val device: Device,
-    val time: LocalDateTime
+    val name: String="",
+    val status: Boolean = false
 )

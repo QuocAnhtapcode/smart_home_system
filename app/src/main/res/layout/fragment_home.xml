@@ -114,9 +114,10 @@
                 android:layout_height="wrap_content"
                 android:text="30°C"
                 android:textColor="@color/orange"
-                android:textSize="24sp"
+                android:textSize="12sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@id/temperature_icon"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/temperature_icon"
                 app:layout_constraintTop_toTopOf="@id/temperature_icon" />
 
@@ -124,6 +125,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Temperature"
+                android:textSize="10sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -153,9 +155,10 @@
                 android:layout_height="wrap_content"
                 android:text="80%"
                 android:textColor="@color/blue_3"
-                android:textSize="24sp"
+                android:textSize="12sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@id/humidity_icon"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/humidity_icon"
                 app:layout_constraintTop_toTopOf="@id/humidity_icon" />
 
@@ -163,6 +166,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Humidity"
+                android:textSize="10sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -193,9 +197,10 @@
                 android:layout_marginStart="2dp"
                 android:text="2003"
                 android:textColor="@color/green"
-                android:textSize="24sp"
+                android:textSize="12sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@id/light_icon"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/light_icon"
                 app:layout_constraintTop_toTopOf="@id/light_icon" />
 
@@ -203,6 +208,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Light"
+                android:textSize="10sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

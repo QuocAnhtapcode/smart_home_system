@@ -4,4 +4,8 @@
     <string name="detail">Detail</string>
     <string name="history">History</string>
     <string name="profile">Profile</string>
+    
+    <string name="light_value">%1$d</string>
+    <string name="humidity_value">%1$.1f%%</string>
+    <string name="temperature_value">%1$.1f°C</string>
 </resources>

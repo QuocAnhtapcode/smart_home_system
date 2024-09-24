@@ -32,7 +32,36 @@
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/bg_device_history_recycler_view"
-        android:padding="16dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title" />
+    <TextView
+        android:id="@+id/page"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Page 1"
+        android:textColor="@color/main_color"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:layout_marginBottom="8dp"/>
+    <ImageView
+        android:id="@+id/next_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_next"/>
+    <ImageView
+        android:id="@+id/previous_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_previous"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "796619394793",
+    "firebase_url": "https://esp-firebase-demo-b87a1-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "esp-firebase-demo-b87a1",
+    "storage_bucket": "esp-firebase-demo-b87a1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:796619394793:android:c4254bc20b37ed0caeaa78",
+        "android_client_info": {
+          "package_name": "club.mobile.d21.smarthomesystem"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpU4LwnddBioGofayYNeAi2YHPdHGUbE8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
