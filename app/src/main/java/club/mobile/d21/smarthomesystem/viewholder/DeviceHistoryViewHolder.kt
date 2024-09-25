@@ -4,6 +4,7 @@ import androidx.recyclerview.widget.RecyclerView
 import club.mobile.d21.smarthomesystem.R
 import club.mobile.d21.smarthomesystem.databinding.ItemDeviceHistoryBinding
 import club.mobile.d21.smarthomesystem.model.device.DeviceHistory
+import club.mobile.d21.smarthomesystem.util.Util.formatTimestamp
 
 class DeviceHistoryViewHolder(private val binding: ItemDeviceHistoryBinding) :
     RecyclerView.ViewHolder(binding.root) {
@@ -21,9 +22,5 @@ class DeviceHistoryViewHolder(private val binding: ItemDeviceHistoryBinding) :
         }
         binding.time.text = formatTimestamp(deviceHistory.first)
     }
-    private fun formatTimestamp(timestamp: Long): String {
-        val date = java.util.Date(timestamp)
-        val format = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault())
-        return format.format(date)
-    }
+
 }

@@ -40,19 +40,16 @@ class HomeFragment : Fragment(), DeviceClickListener {
                 getString(R.string.temperature_value, firebaseData.currentData.temperature)
 
             val dataHistoryList = firebaseData.dataHistory.mapNotNull { (key, value) ->
-                val timestamp = key.toLongOrNull()
-                if (timestamp != null) Pair(timestamp, value) else null
+                Pair(key, value)
             }.sortedByDescending { it.first }
-            val subListSize = if (dataHistoryList.size > 10) 10 else dataHistoryList.size
-            val subList = dataHistoryList.subList(0, subListSize)
             adapter.submitList(
                 listOf(
                     Device("Light", R.drawable.ic_big_light, firebaseData.currentDevice.light),
                     Device("Air Conditioner", R.drawable.ic_big_ac, firebaseData.currentDevice.ac),
                     Device("Television", R.drawable.ic_big_tv, firebaseData.currentDevice.tv),
-                    Chart("Temperature (°C)", subList),
-                    Chart("Humidity (%)", subList),
-                    Chart("Light (lux)", subList)
+                    Chart("Temperature (°C)", dataHistoryList),
+                    Chart("Humidity (%)", dataHistoryList),
+                    Chart("Light (lux)", dataHistoryList)
                 )
             )
         }

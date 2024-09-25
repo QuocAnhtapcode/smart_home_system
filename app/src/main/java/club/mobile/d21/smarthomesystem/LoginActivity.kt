@@ -1,5 +1,6 @@
 package club.mobile.d21.smarthomesystem
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -16,26 +17,39 @@ class LoginActivity: AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
         auth = FirebaseAuth.getInstance()
-        binding.loginButton.setOnClickListener {
-            loginUser(
-                binding.emailInput.text.toString(),
-                binding.passwordInput.text.toString()
-            )
+
+        val sharedPref = getSharedPreferences("AccountPrefs", Context.MODE_PRIVATE)
+        val savedUserId = sharedPref.getString("USER_ID", null)
+        if (savedUserId != null) {
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
         }
-    }
-    private fun loginUser(email: String, password: String) {
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    val user = auth.currentUser
-                    if (user != null) {
-                        val intent = Intent(this, MainActivity::class.java)
-                        startActivity(intent)
-                        finish()
-                    }
-                } else {
-                    Toast.makeText(this, "Login failed: ${task.exception?.message}", Toast.LENGTH_LONG).show()
-                }
+
+        binding.loginButton.setOnClickListener {
+            val email = binding.emailInput.text.toString().trim()
+            val password = binding.passwordInput.text.toString().trim()
+
+            if (email.isEmpty() || password.isEmpty()) {
+                Toast.makeText(this, "Please enter full email and password", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
+
+            auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this) { task ->
+                    if (task.isSuccessful) {
+                        val user = auth.currentUser
+                        if (user != null) {
+                            with(sharedPref.edit()) {
+                                putString("USER_ID", user.uid)
+                                apply()
+                            }
+                            startActivity(Intent(this, MainActivity::class.java))
+                            finish()
+                        }
+                    } else {
+                        Toast.makeText(this, "Login failed: ${task.exception?.message}", Toast.LENGTH_LONG).show()
+                    }
+                }
+        }
     }
 }

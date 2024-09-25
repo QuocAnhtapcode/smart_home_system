@@ -8,4 +8,15 @@
     <string name="light_value">%1$d</string>
     <string name="humidity_value">%1$.1f%%</string>
     <string name="temperature_value">%1$.1f°C</string>
+
+    <string-array name="sort_options">
+        <item>Time Ascending</item>
+        <item>Time Descending</item>
+        <item>Temperature Ascending</item>
+        <item>Temperature Descending</item>
+        <item>Humidity Ascending</item>
+        <item>Humidity Descending</item>
+        <item>Light Ascending</item>
+        <item>Light Descending</item>
+    </string-array>
 </resources>

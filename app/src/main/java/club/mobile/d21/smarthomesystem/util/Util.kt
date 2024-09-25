@@ -4,6 +4,7 @@ import club.mobile.d21.smarthomesystem.R
 
 object Util {
     var currentPage = 1
+    var currentDataPage = 1
     fun getColorBasedOnTemperatureValue(value: Float): Int {
         return when {
             value < 25 -> R.color.green
@@ -33,4 +34,10 @@ object Util {
             else -> R.color.orange
         }
     }
+    fun formatTimestamp(timestamp: Long): String {
+        val date = java.util.Date(timestamp)
+        val format = java.text.SimpleDateFormat("yyyy-MM-dd\nHH:mm:ss", java.util.Locale.getDefault())
+        return format.format(date)
+    }
+
 }

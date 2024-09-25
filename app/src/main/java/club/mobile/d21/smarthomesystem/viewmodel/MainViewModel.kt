@@ -10,30 +10,34 @@ import androidx.lifecycle.MutableLiveData
 import club.mobile.d21.smarthomesystem.model.FirebaseData
 import club.mobile.d21.smarthomesystem.model.device.DeviceHistory
 import club.mobile.d21.smarthomesystem.model.device.DeviceStatus
-import club.mobile.d21.smarthomesystem.model.sensor_data.CurrentData
 import club.mobile.d21.smarthomesystem.model.sensor_data.SensorData
+import club.mobile.d21.smarthomesystem.util.Util.currentPage
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.GenericTypeIndicator
 import com.google.firebase.database.ValueEventListener
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
-
+    private var lastKey: String? = null
+    private var firstKey: String? = null
     private lateinit var database: DatabaseReference
     private var userId: String = ""
 
     private val _firebaseData = MutableLiveData<FirebaseData>()
     val firebaseData: LiveData<FirebaseData> get() = _firebaseData
+    private val _deviceHistory = MutableLiveData<Map<Long, DeviceHistory>>()
+    val deviceHistory: LiveData<Map<Long, DeviceHistory>> get() = _deviceHistory
+    private val _sortedDataHistory = MutableLiveData<List<Pair<Long, SensorData>>>()
+    val sortedDataHistory: LiveData<List<Pair<Long, SensorData>>> get() = _sortedDataHistory
 
     private val handler = Handler(Looper.getMainLooper())
-    private val updateInterval = 10000L // 10 giây
+    private val updateInterval = 3000L
 
     private val updateDataRunnable = object : Runnable {
         override fun run() {
-            fetchDataFromFirebase() // Lấy dữ liệu từ Firebase
-            handler.postDelayed(this, updateInterval) // Lặp lại sau mỗi 10 giây
+            fetchDataFromFirebase()
+            handler.postDelayed(this, updateInterval)
         }
     }
 
@@ -48,52 +52,58 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun fetchDataFromFirebase() {
-        if (!this::database.isInitialized) {
-            Log.e("MainViewModel", "Database is not initialized. Please set user ID first.")
-            return
-        }
+        fetchDataHistory()
+    }
 
-        database.addListenerForSingleValueEvent(object : ValueEventListener {
+    private fun fetchDataHistory() {
+        val dataHistoryQuery = database.child("dataHistory").orderByKey().limitToLast(100)
+        dataHistoryQuery.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
-                    try {
-                        // Lấy dữ liệu từ từng phần riêng biệt để kiểm tra và log nếu cần thiết
-                        val deviceHistory = snapshot.child("deviceHistory").getValue(object : GenericTypeIndicator<Map<String, DeviceHistory>>() {})
-                            ?: emptyMap()
-                        Log.d("MainViewModel", "Fetched deviceHistory: $deviceHistory")
-
-                        val dataHistory = snapshot.child("dataHistory").getValue(object : GenericTypeIndicator<Map<String, SensorData>>() {})
-                            ?: emptyMap()
-                        Log.d("MainViewModel", "Fetched dataHistory: $dataHistory")
-
-                        val currentDevice = snapshot.child("currentDevice").getValue(DeviceStatus::class.java) ?: DeviceStatus()
-                        Log.d("MainViewModel", "Fetched currentDevice: $currentDevice")
-
-                        val currentData = snapshot.child("currentData").getValue(CurrentData::class.java) ?: CurrentData()
-                        Log.d("MainViewModel", "Fetched currentData: $currentData")
-
-                        // Tạo đối tượng FirebaseData từ các phần dữ liệu đã lấy được
-                        val data = FirebaseData(
-                            deviceHistory = deviceHistory,
-                            dataHistory = dataHistory,
-                            currentDevice = currentDevice,
-                            currentData = currentData
-                        )
-                        _firebaseData.value = data
-                    } catch (e: Exception) {
-                        Log.e("MainViewModel", "Error parsing data from Firebase: ${e.message}")
-                    }
+                    val dataHistory = snapshot.children.mapNotNull { dataSnapshot ->
+                        val key = dataSnapshot.key?.toLongOrNull()
+                        val value = dataSnapshot.getValue(SensorData::class.java)
+                        if (key != null && value != null) key to value else null
+                    }.toMap()
+                    val latestCurrentData = dataHistory.entries.maxByOrNull { it.key }?.value ?: SensorData()
+                    updateFirebaseData(dataHistory = dataHistory, currentData = latestCurrentData )
                 } else {
-                    Log.e("MainViewModel", "No data exists at the Firebase reference.")
+                    Log.e("MainViewModel", "No data exists at the dataHistory reference.")
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.e("MainViewModel", "Error fetching data from Firebase: ${error.message}")
+                Log.e("MainViewModel", "Error fetching dataHistory: ${error.message}")
             }
         })
     }
 
+    private fun fetchCurrentDeviceData() {
+        database.child("currentDevice").addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val currentDevice = snapshot.getValue(DeviceStatus::class.java) ?: DeviceStatus()
+                updateFirebaseData(currentDevice = currentDevice)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("MainViewModel", "Error fetching currentDevice: ${error.message}")
+            }
+        })
+    }
+
+    private fun updateFirebaseData(
+        dataHistory: Map<Long, SensorData>? = null,
+        currentDevice: DeviceStatus? = null,
+        currentData: SensorData? = null
+    ) {
+        val existingData = _firebaseData.value ?: FirebaseData()
+        val newData = existingData.copy(
+            dataHistory = dataHistory ?: existingData.dataHistory,
+            currentDevice = currentDevice ?: existingData.currentDevice,
+            currentData = currentData ?: existingData.currentData
+        )
+        _firebaseData.value = newData
+    }
 
     fun logLedStatus(ledName: String, isOn: Boolean) {
         if (!this::database.isInitialized) {
@@ -107,14 +117,83 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         )
         database.child("deviceHistory").child(timestamp.toString()).setValue(ledStatus)
             .addOnSuccessListener {
-                Log.d("MainViewModel", "LED status logged successfully.")
+                currentPage = 1
+                fetchDeviceHistoryData(10, "next")
             }
             .addOnFailureListener { e ->
                 Log.e("MainViewModel", "Failed to log LED status: ${e.message}")
             }
         database.child("currentDevice").child(ledName).setValue(isOn)
+        fetchCurrentDeviceData()
     }
 
+    fun fetchDeviceHistoryData(limit: Int, direction: String) {
+        if (!this::database.isInitialized) {
+            Log.e("MainViewModel", "Database is not initialized. Please set user ID first.")
+            return
+        }
+
+        var query = database.child("deviceHistory").orderByKey()
+
+        query = if (direction == "next" && firstKey != null) {
+            query.endBefore(firstKey).limitToLast(limit)
+        } else if (direction == "previous" && lastKey != null) {
+            query.startAfter(lastKey).limitToFirst(limit)
+        } else {
+            query.limitToLast(limit)
+        }
+
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    val deviceHistoryList = mutableListOf<Pair<Long, DeviceHistory>>()
+
+                    for (data in snapshot.children) {
+                        val key = data.key
+                        val value = data.getValue(DeviceHistory::class.java)
+                        val timestamp = key?.toLongOrNull()
+                        if (timestamp != null && value != null) {
+                            deviceHistoryList.add(Pair(timestamp, value))
+                        }
+                    }
+                    if (deviceHistoryList.isNotEmpty()) {
+                        // Cập nhật khóa đầu và cuối nếu có dữ liệu
+                        firstKey = snapshot.children.firstOrNull()?.key
+                        lastKey = snapshot.children.lastOrNull()?.key
+
+                        _deviceHistory.value = deviceHistoryList.toMap()
+                        Log.d("MainViewModel", "Fetched ${deviceHistoryList.size} items for direction: $direction")
+                    } else {
+                        Log.d("MainViewModel", "No new data found for direction: $direction, not updating keys.")
+                    }
+                } else {
+                    Log.e("MainViewModel", "No data found for the given query.")
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("MainViewModel", "Error fetching data: ${error.message}")
+            }
+        })
+    }
+    fun updateSortedDataHistory(sortOption: Int) {
+        val dataHistoryList = _firebaseData.value!!.dataHistory.mapNotNull { (key, value) ->
+            Pair(key * 1000, value)
+        }
+        val sortedList = when (sortOption) {
+            0 -> dataHistoryList.sortedBy { it.first }
+            1 -> dataHistoryList.sortedByDescending { it.first }
+            2 -> dataHistoryList.sortedBy { it.second.temperature }
+            3 -> dataHistoryList.sortedByDescending { it.second.temperature }
+            4 -> dataHistoryList.sortedBy { it.second.humidity }
+            5 -> dataHistoryList.sortedByDescending { it.second.humidity }
+            6 -> dataHistoryList.sortedBy { it.second.light }
+            7 -> dataHistoryList.sortedByDescending { it.second.light }
+            else -> dataHistoryList.sortedByDescending { it.first }
+        }
+
+        _sortedDataHistory.value = sortedList
+    }
     fun startUpdatingData() {
         handler.post(updateDataRunnable)
     }
