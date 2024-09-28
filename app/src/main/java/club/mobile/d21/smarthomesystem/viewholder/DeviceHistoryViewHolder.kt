@@ -8,12 +8,23 @@ import club.mobile.d21.smarthomesystem.util.Util.formatTimestamp
 
 class DeviceHistoryViewHolder(private val binding: ItemDeviceHistoryBinding) :
     RecyclerView.ViewHolder(binding.root) {
-    fun bind(deviceHistory: Pair<Long,DeviceHistory>) {
-        binding.name.text = deviceHistory.second.name
-        when(deviceHistory.second.name){
-            "light"-> binding.image.setImageResource(R.drawable.ic_big_light)
-            "ac"-> binding.image.setImageResource(R.drawable.ic_big_ac)
-            "tv"-> binding.image.setImageResource(R.drawable.ic_big_tv)
+    fun bind(deviceHistory: Pair<Long, DeviceHistory>) {
+
+        when (deviceHistory.second.name) {
+            "light" -> {
+                binding.name.text = "Light"
+                binding.image.setImageResource(R.drawable.ic_small_light)
+            }
+
+            "ac" -> {
+                binding.name.text = "Air Conditioner"
+                binding.image.setImageResource(R.drawable.ic_small_ac)
+            }
+
+            "tv" -> {
+                binding.name.text = "Television"
+                binding.image.setImageResource(R.drawable.ic_small_tv)
+            }
         }
         if (deviceHistory.second.status) {
             binding.status.setImageResource(R.drawable.ic_on)

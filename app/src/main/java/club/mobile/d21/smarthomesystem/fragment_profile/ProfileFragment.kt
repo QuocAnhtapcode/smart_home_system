@@ -2,13 +2,20 @@ package club.mobile.d21.smarthomesystem.fragment_profile
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import club.mobile.d21.smarthomesystem.LoginActivity
 import club.mobile.d21.smarthomesystem.databinding.FragmentProfileBinding
+import android.text.style.ClickableSpan
+import androidx.core.content.ContextCompat
+import club.mobile.d21.smarthomesystem.R
 import com.google.firebase.auth.FirebaseAuth
 
 class ProfileFragment: Fragment() {
@@ -23,6 +30,21 @@ class ProfileFragment: Fragment() {
         binding.logoutButton.setOnClickListener {
             logOut()
         }
+        val spannableGithub = SpannableString("QuocAnhtapcode")
+        val clickableGithub = object : ClickableSpan() {
+            override fun onClick(widget: View){
+                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/QuocAnhtapcode/smart_home_system.git"))
+                startActivity(browserIntent)
+            }
+            override fun updateDrawState(ds: android.text.TextPaint) {
+                super.updateDrawState(ds)
+                ds.color = ContextCompat.getColor(requireContext(), R.color.main_color) // Màu của link
+                ds.isUnderlineText = true
+            }
+        }
+        spannableGithub.setSpan(clickableGithub, 0, 14, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        binding.githubLink.text = spannableGithub
+        binding.githubLink.movementMethod = LinkMovementMethod.getInstance()
         return binding.root
     }
     private fun logOut() {

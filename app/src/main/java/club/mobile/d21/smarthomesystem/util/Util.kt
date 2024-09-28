@@ -4,7 +4,6 @@ import club.mobile.d21.smarthomesystem.R
 
 object Util {
     var currentPage = 1
-    var currentDataPage = 1
     fun getColorBasedOnTemperatureValue(value: Float): Int {
         return when {
             value < 25 -> R.color.green

@@ -12,17 +12,16 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="Air conditioner"
-        android:textSize="24sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/image"
-        app:layout_constraintTop_toTopOf="@id/image" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_big_ac"
+        android:src="@drawable/ic_small_ac"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
@@ -33,19 +32,18 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="10/09/2024 14:35:20"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@id/image"
-        app:layout_constraintStart_toEndOf="@id/image"
-        app:layout_constraintTop_toBottomOf="@id/name" />
+        android:textSize="12sp"
+        app:layout_constraintTop_toBottomOf="@id/name"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/image" />
 
     <ImageView
         android:id="@+id/status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:scaleX="1.5"
-        android:scaleY="1.5"
+        android:layout_marginEnd="16dp"
         android:src="@drawable/ic_on"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
