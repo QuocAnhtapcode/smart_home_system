@@ -42,14 +42,11 @@ class LoginActivity: AppCompatActivity() {
                             if (tokenTask.isSuccessful) {
                                 val idToken = tokenTask.result?.token
                                 Log.e("AuthToken", idToken ?: "No Token Found")
-
-                                // Lưu idToken vào SharedPreferences
                                 with(sharedPref.edit()) {
-                                    putString("ID_TOKEN", idToken)
+                                    putString("USER_ID", idToken)
                                     apply()
                                 }
 
-                                // Chuyển đến MainActivity
                                 startActivity(Intent(this, MainActivity::class.java))
                                 finish()
                             } else {

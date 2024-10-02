@@ -62,6 +62,21 @@ class ProfileFragment: Fragment() {
         binding.apiLink.text = spannableApiDocs
         binding.apiLink.movementMethod = LinkMovementMethod.getInstance()
 
+        val spannableReport = SpannableString("Báo cáo")
+        val clickableReport = object : ClickableSpan() {
+            override fun onClick(widget: View){
+                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://drive.google.com/file/d/1NGO6zR62Y2uIVwJDFibOJ7UlbkiruZrF/view?usp=sharing"))
+                startActivity(browserIntent)
+            }
+            override fun updateDrawState(ds: android.text.TextPaint) {
+                super.updateDrawState(ds)
+                ds.color = ContextCompat.getColor(requireContext(), R.color.main_color)
+                ds.isUnderlineText = true
+            }
+        }
+        spannableReport.setSpan(clickableReport,0,7,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        binding.reportLink.text = spannableReport
+        binding.reportLink.movementMethod = LinkMovementMethod.getInstance()
         return binding.root
     }
     private fun logOut() {

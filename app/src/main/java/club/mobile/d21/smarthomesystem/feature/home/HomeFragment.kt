@@ -120,6 +120,6 @@ class HomeFragment : Fragment(), DeviceClickListener {
             "Air Conditioner" -> homeViewModel.logLedStatus("ac", device.status)
             "Television" -> homeViewModel.logLedStatus("tv", device.status)
         }
-        deviceHistoryViewModel.fetchDeviceHistory(10, "")
+        deviceHistoryViewModel.fetchDeviceHistoryByFilters("", "All")
     }
 }

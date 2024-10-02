@@ -7,13 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import club.mobile.d21.smarthomesystem.databinding.FragmentDeviceHistoryBinding
 import club.mobile.d21.smarthomesystem.core.util.Util.currentPage
+import club.mobile.d21.smarthomesystem.databinding.FragmentDeviceHistoryBinding
 
 class DeviceHistoryFragment : Fragment() {
     private var _binding: FragmentDeviceHistoryBinding? = null
     private val binding get() = _binding!!
-    //private val mainViewModel: MainViewModel by activityViewModels()
     private val deviceHistoryViewModel: DeviceHistoryViewModel by activityViewModels()
     private val limit = 10
 
@@ -34,6 +33,7 @@ class DeviceHistoryFragment : Fragment() {
             adapter.submitList(deviceHistoryList)
         }
 
+        /*
         binding.nextButton.setOnClickListener {
             deviceHistoryViewModel.fetchDeviceHistory(limit, "next")
             if (deviceHistoryViewModel.deviceHistory.value?.size == limit) {
@@ -48,6 +48,11 @@ class DeviceHistoryFragment : Fragment() {
                 currentPage--
                 binding.page.text = "Page $currentPage"
             }
+        }
+         */
+        binding.filterButton.setOnClickListener {
+            val filteredDialogFragment = FilteredDeviceHistoryDialogFragment()
+            filteredDialogFragment.show(childFragmentManager, "FilteredDeviceHistoryDialogFragment")
         }
         return binding.root
     }

@@ -33,31 +33,24 @@ class DetailFragment : Fragment() {
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.sortSpinner.adapter = spinnerAdapter
 
-        dataHistoryViewModel.updateSortedDataHistory(1)
-
         binding.sortSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                adapter.submitList(null)
                 dataHistoryViewModel.updateSortedDataHistory(position)
-                binding.recyclerView.scrollToPosition(0)
             }
             override fun onNothingSelected(parent: AdapterView<*>) {
-                dataHistoryViewModel.updateSortedDataHistory(1)
             }
         }
 
         dataHistoryViewModel.dataHistory.observe(viewLifecycleOwner) { dataList ->
             adapter.submitList(dataList)
-            binding.recyclerView.scrollToPosition(0)
         }
-
         binding.searchButton.setOnClickListener {
             val searchOption = binding.searchSpinner.selectedItem.toString()
             val searchValue = binding.searchInput.text.toString().trim()
             dataHistoryViewModel.performSearch(searchOption, searchValue)
         }
-
-        dataHistoryViewModel.startUpdatingData()
-
+        //dataHistoryViewModel.startUpdatingData()
         return binding.root
     }
     override fun onDestroyView() {

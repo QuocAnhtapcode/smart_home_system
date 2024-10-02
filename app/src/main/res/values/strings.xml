@@ -10,14 +10,14 @@
     <string name="temperature_value">%1$.1f°C</string>
 
     <string-array name="sort_options">
-        <item>Time Ascending</item>
         <item>Time Descending</item>
-        <item>Temperature Ascending</item>
+        <item>Time Ascending</item>
         <item>Temperature Descending</item>
-        <item>Humidity Ascending</item>
+        <item>Temperature Ascending</item>
         <item>Humidity Descending</item>
-        <item>Light Ascending</item>
+        <item>Humidity Ascending</item>
         <item>Light Descending</item>
+        <item>Light Ascending</item>
     </string-array>
     <string-array name="search_options">
         <item>All</item>

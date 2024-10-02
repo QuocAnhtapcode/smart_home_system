@@ -36,7 +36,7 @@ class DataHistoryViewModel(application: Application) : AndroidViewModel(applicat
 
     private fun fetchDataHistory() {
         val database = FirebaseManager.getDatabaseReference()
-        val dataHistoryQuery = database.child("dataHistory").orderByKey().limitToLast(100)
+        val dataHistoryQuery = database.child("dataHistory").orderByKey().limitToLast(500)
         dataHistoryQuery.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
@@ -63,15 +63,15 @@ class DataHistoryViewModel(application: Application) : AndroidViewModel(applicat
         } ?: emptyList()
 
         val sortedList = when (sortOption) {
-            0 -> dataHistoryList.sortedBy { it.first }
-            1 -> dataHistoryList.sortedByDescending { it.first }
-            2 -> dataHistoryList.sortedBy { it.second.temperature }
-            3 -> dataHistoryList.sortedByDescending { it.second.temperature }
-            4 -> dataHistoryList.sortedBy { it.second.humidity }
-            5 -> dataHistoryList.sortedByDescending { it.second.humidity }
-            6 -> dataHistoryList.sortedBy { it.second.light }
-            7 -> dataHistoryList.sortedByDescending { it.second.light }
-            else -> dataHistoryList.sortedByDescending { it.first }
+            0 -> dataHistoryList.sortedByDescending { it.first }
+            1 -> dataHistoryList.sortedBy { it.first }
+            2 -> dataHistoryList.sortedByDescending { it.second.temperature }
+            3 -> dataHistoryList.sortedBy { it.second.temperature }
+            4 -> dataHistoryList.sortedByDescending { it.second.humidity }
+            5 -> dataHistoryList.sortedBy { it.second.humidity }
+            6 -> dataHistoryList.sortedByDescending { it.second.light }
+            7 -> dataHistoryList.sortedBy { it.second.light }
+            else -> dataHistoryList
         }
         _dataHistory.postValue(sortedList)
     }
@@ -115,9 +115,11 @@ class DataHistoryViewModel(application: Application) : AndroidViewModel(applicat
     fun startUpdatingData() {
         handler.post(updateDataRunnable)
     }
-
+    fun stopUpdatingData(){
+        handler.removeCallbacks(updateDataRunnable)
+    }
     override fun onCleared() {
         super.onCleared()
-        handler.removeCallbacks(updateDataRunnable)
+        stopUpdatingData()
     }
 }
