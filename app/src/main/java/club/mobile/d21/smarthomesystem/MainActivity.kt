@@ -2,20 +2,15 @@ package club.mobile.d21.smarthomesystem
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import club.mobile.d21.smarthomesystem.core.util.FirebaseManager
 import club.mobile.d21.smarthomesystem.databinding.ActivityMainBinding
-import club.mobile.d21.smarthomesystem.viewmodel.MainViewModel
-import club.mobile.d21.smarthomesystem.viewmodel.MainViewModelFactory
 import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private val mainViewModel: MainViewModel by viewModels {
-        MainViewModelFactory(application)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,13 +38,7 @@ class MainActivity : AppCompatActivity() {
     private fun setupViewModel() {
         val currentUser = FirebaseAuth.getInstance().currentUser
         currentUser?.let { user ->
-            mainViewModel.setUserId(user.uid)
-            mainViewModel.fetchDeviceHistoryData(10, "next")
-            mainViewModel.startUpdatingData()
+            FirebaseManager.setUserId(user.uid)
         }
-    }
-    override fun onDestroy() {
-        super.onDestroy()
-        mainViewModel.stopUpdatingData()
     }
 }

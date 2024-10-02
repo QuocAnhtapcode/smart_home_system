@@ -38,18 +38,29 @@ class LoginActivity: AppCompatActivity() {
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         val user = auth.currentUser
-                        if (user != null) {
-                            with(sharedPref.edit()) {
-                                putString("USER_ID", user.uid)
-                                apply()
+                        user?.getIdToken(true)?.addOnCompleteListener { tokenTask ->
+                            if (tokenTask.isSuccessful) {
+                                val idToken = tokenTask.result?.token
+                                Log.e("AuthToken", idToken ?: "No Token Found")
+
+                                // Lưu idToken vào SharedPreferences
+                                with(sharedPref.edit()) {
+                                    putString("ID_TOKEN", idToken)
+                                    apply()
+                                }
+
+                                // Chuyển đến MainActivity
+                                startActivity(Intent(this, MainActivity::class.java))
+                                finish()
+                            } else {
+                                Log.e("TokenError", "Failed to get token: ${tokenTask.exception?.message}")
                             }
-                            startActivity(Intent(this, MainActivity::class.java))
-                            finish()
                         }
                     } else {
                         Toast.makeText(this, "Login failed: ${task.exception?.message}", Toast.LENGTH_LONG).show()
                     }
                 }
+
         }
     }
 }
