@@ -13,6 +13,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import club.mobile.d21.smarthomesystem.R
 import club.mobile.d21.smarthomesystem.core.util.Util
+import club.mobile.d21.smarthomesystem.core.util.Util.getCurrentDate
+import club.mobile.d21.smarthomesystem.core.util.Util.isAboveThreshold
 import club.mobile.d21.smarthomesystem.data.model.chart.Chart
 import club.mobile.d21.smarthomesystem.data.model.device.Device
 import club.mobile.d21.smarthomesystem.data.model.sensor_data.SensorData
@@ -32,6 +34,9 @@ class HomeFragment : Fragment(), DeviceClickListener {
     private val chartDataList = mutableListOf<Pair<Long, SensorData>>()
     private val maxChartSize = 20
 
+    private var startTime: Long = 0L
+    private var endTime: Long = 0L
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -43,12 +48,31 @@ class HomeFragment : Fragment(), DeviceClickListener {
         binding.recyclerView.adapter = adapter
 
         handler.post(timeUpdater)
-        homeViewModel.combinedLiveData.observe(viewLifecycleOwner) { (dataHistory, currentDevice) ->
+
+        homeViewModel.combinedLiveData.observe(viewLifecycleOwner) { (dataHistory, currentDevice, warningCount) ->
             dataHistory?.let { dataHistoryMap ->
                 val dataHistoryList = dataHistoryMap.mapNotNull { (key, value) ->
                     Pair(key, value)
                 }.sortedByDescending { it.first }
 
+                if(dataHistoryList[0].second.light>3500){
+                    if(!isAboveThreshold){
+                        isAboveThreshold = true
+                        startTime = System.currentTimeMillis()
+                    }
+                    homeViewModel.logWarningStatus(true)
+                }else{
+                    if(isAboveThreshold){
+                        isAboveThreshold=false
+                        endTime = System.currentTimeMillis()
+                        homeViewModel.addWarningCount(getCurrentDate(),startTime,endTime)
+                    }
+                    homeViewModel.logWarningStatus( false)
+                }
+                binding.warningCount.text = buildString {
+                    append("Warning : ")
+                    append(warningCount!!.toInt())
+                }
                 binding.lightText.text = getString(R.string.light_value, dataHistoryList[0].second.light.toInt())
                 binding.lightText.setTextColor(ContextCompat.getColor(requireContext(),
                     Util.getColorBasedOnLightValue(dataHistoryList[0].second.light)))
@@ -69,6 +93,7 @@ class HomeFragment : Fragment(), DeviceClickListener {
                             Device("Light", R.drawable.ic_big_light, device.light),
                             Device("Air Conditioner", R.drawable.ic_big_ac, device.ac),
                             Device("Television", R.drawable.ic_big_tv, device.tv),
+                            Device("Warning",R.drawable.ic_warning,device.warning),
                             Chart("Temperature (°C)", chartDataList),
                             Chart("Humidity (%)", chartDataList),
                             Chart("Light (lux)", chartDataList)
@@ -77,6 +102,7 @@ class HomeFragment : Fragment(), DeviceClickListener {
                 }
             }
         }
+
         return binding.root
     }
 
@@ -96,7 +122,7 @@ class HomeFragment : Fragment(), DeviceClickListener {
     }
 
     private val handler = Handler(Looper.getMainLooper())
-    private val updateInterval = 1000L // Cập nhật mỗi giây
+    private val updateInterval = 1000L
 
     private val timeUpdater = object : Runnable {
         override fun run() {

@@ -21,7 +21,6 @@ class DeviceViewHolder(private val binding: ItemDeviceBinding,
         binding.deviceStatus.setOnClickListener {
             device.status = !device.status
             listener.onDeviceClicked(device)
-            updateStatusImage(device.status)
         }
     }
 

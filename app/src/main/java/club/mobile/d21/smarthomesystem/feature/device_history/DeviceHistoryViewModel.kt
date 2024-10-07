@@ -10,15 +10,13 @@ import club.mobile.d21.smarthomesystem.data.model.device.DeviceHistory
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Date
-import java.util.Locale
 
 class DeviceHistoryViewModel(application: Application) : AndroidViewModel(application) {
     private val _deviceHistory = MutableLiveData<List<Pair<Long, DeviceHistory>>>()
     val deviceHistory: LiveData<List<Pair<Long, DeviceHistory>>> get() = _deviceHistory
 
+    private val database = FirebaseManager.getDatabaseReference()
     private var lastKey: String? = null
     private var firstKey: String? = null
 
@@ -27,11 +25,8 @@ class DeviceHistoryViewModel(application: Application) : AndroidViewModel(applic
             fetchDeviceHistoryByFilters("","All")
         }
     }
-
     fun fetchDeviceHistoryByFilters(selectedDate: String, deviceType: String) {
-        val database = FirebaseManager.getDatabaseReference()
         val query = database.child("deviceHistory").orderByKey()
-
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {

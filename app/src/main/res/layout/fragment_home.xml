@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
         android:layout_marginTop="32dp"
-        android:text="Good morning"
+        android:text="@string/good_morning"
         android:textColor="@color/white"
         android:textSize="28sp"
         android:textStyle="bold"
@@ -76,6 +76,16 @@
             android:text="Ha Noi, Viet Nam"
             app:layout_constraintStart_toEndOf="@id/weather_icon"
             app:layout_constraintTop_toBottomOf="@id/weather_text" />
+
+        <TextView
+            android:id="@+id/warning_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="Warning : 0"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/light" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline1"

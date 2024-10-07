@@ -1,9 +1,17 @@
 package club.mobile.d21.smarthomesystem.core.util
 
 import club.mobile.d21.smarthomesystem.R
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 object Util {
-    var currentPage = 1
+    var isAboveThreshold = false
+    fun getCurrentDate(): String {
+        val calendar = Calendar.getInstance()
+        val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        return format.format(calendar.time)
+    }
     fun getColorBasedOnTemperatureValue(value: Float): Int {
         return when {
             value < 25 -> R.color.green

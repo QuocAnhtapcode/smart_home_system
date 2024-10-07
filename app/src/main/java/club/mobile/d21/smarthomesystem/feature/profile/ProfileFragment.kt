@@ -7,15 +7,15 @@ import android.os.Bundle
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import club.mobile.d21.smarthomesystem.LoginActivity
-import club.mobile.d21.smarthomesystem.databinding.FragmentProfileBinding
-import android.text.style.ClickableSpan
-import androidx.core.content.ContextCompat
 import club.mobile.d21.smarthomesystem.R
+import club.mobile.d21.smarthomesystem.databinding.FragmentProfileBinding
 import com.google.firebase.auth.FirebaseAuth
 
 class ProfileFragment: Fragment() {
