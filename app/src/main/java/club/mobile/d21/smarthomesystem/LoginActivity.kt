@@ -46,7 +46,6 @@ class LoginActivity: AppCompatActivity() {
                                     putString("USER_ID", idToken)
                                     apply()
                                 }
-
                                 startActivity(Intent(this, MainActivity::class.java))
                                 finish()
                             } else {

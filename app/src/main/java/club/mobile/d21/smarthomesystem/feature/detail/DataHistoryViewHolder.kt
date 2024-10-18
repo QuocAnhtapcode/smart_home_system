@@ -12,5 +12,7 @@ class DataHistoryViewHolder(private val binding: ItemDataHistoryBinding)
             binding.temperatureText.text = dataHistory.second.temperature.toString()
             binding.humidityText.text = dataHistory.second.humidity.toString()
             binding.lightText.text = dataHistory.second.light.toString()
+            binding.windText.text = dataHistory.second.wind.toString()
+            binding.airText.text = dataHistory.second.air.toString()
         }
 }

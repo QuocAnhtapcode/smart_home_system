@@ -29,9 +29,9 @@ class DeviceHistoryFragment : Fragment() {
         deviceHistoryViewModel.deviceHistory.observe(viewLifecycleOwner) { deviceHistory ->
             val deviceHistoryList = deviceHistory.map { (key, value) -> Pair(key, value) }
                 .sortedByDescending { it.first }
+            adapter.submitList(null)
             adapter.submitList(deviceHistoryList)
         }
-
         /*
         binding.nextButton.setOnClickListener {
             deviceHistoryViewModel.fetchDeviceHistory(limit, "next")
@@ -52,6 +52,9 @@ class DeviceHistoryFragment : Fragment() {
         binding.filterButton.setOnClickListener {
             val filteredDialogFragment = FilteredDeviceHistoryDialogFragment()
             filteredDialogFragment.show(childFragmentManager, "FilteredDeviceHistoryDialogFragment")
+        }
+        binding.searchButton.setOnClickListener {
+            deviceHistoryViewModel.performSearch(binding.searchInput.text.toString())
         }
         return binding.root
     }

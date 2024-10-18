@@ -15,6 +15,7 @@ import club.mobile.d21.smarthomesystem.R
 import club.mobile.d21.smarthomesystem.core.util.Util
 import club.mobile.d21.smarthomesystem.core.util.Util.getCurrentDate
 import club.mobile.d21.smarthomesystem.core.util.Util.isAboveThreshold
+import club.mobile.d21.smarthomesystem.core.util.Util.isDeviceHistoryFiltered
 import club.mobile.d21.smarthomesystem.data.model.chart.Chart
 import club.mobile.d21.smarthomesystem.data.model.device.Device
 import club.mobile.d21.smarthomesystem.data.model.sensor_data.SensorData
@@ -54,20 +55,16 @@ class HomeFragment : Fragment(), DeviceClickListener {
                 val dataHistoryList = dataHistoryMap.mapNotNull { (key, value) ->
                     Pair(key, value)
                 }.sortedByDescending { it.first }
-
-                if(dataHistoryList[0].second.light>3500){
-                    if(!isAboveThreshold){
-                        isAboveThreshold = true
-                        startTime = System.currentTimeMillis()
-                    }
-                    homeViewModel.logWarningStatus(true)
-                }else{
+                if (!isAboveThreshold && dataHistoryList[0].second.wind > 50
+                    && dataHistoryList[0].second.air > 50) {
+                    isAboveThreshold = true
+                    homeViewModel.logLedStatus("warning", true)
+                } else if (dataHistoryList[0].second.wind <= 50
+                    || dataHistoryList[0].second.air <= 50) {
                     if(isAboveThreshold){
-                        isAboveThreshold=false
-                        endTime = System.currentTimeMillis()
-                        homeViewModel.addWarningCount(getCurrentDate(),startTime,endTime)
+                        isAboveThreshold = false
+                        homeViewModel.logLedStatus("warning", false)
                     }
-                    homeViewModel.logWarningStatus( false)
                 }
                 binding.warningCount.text = buildString {
                     append("Warning : ")
@@ -85,6 +82,9 @@ class HomeFragment : Fragment(), DeviceClickListener {
                 binding.temparatureText.setTextColor(ContextCompat.getColor(requireContext(),
                     Util.getColorBasedOnTemperatureValue(dataHistoryList[0].second.temperature)))
 
+                binding.windText.text = dataHistoryList[0].second.wind.toString()
+                binding.airText.text = dataHistoryList[0].second.air.toString()
+
                 updateChartWithNewData(dataHistoryList)
 
                 currentDevice?.let { device ->
@@ -96,7 +96,8 @@ class HomeFragment : Fragment(), DeviceClickListener {
                             Device("Warning",R.drawable.ic_warning,device.warning),
                             Chart("Temperature (°C)", chartDataList),
                             Chart("Humidity (%)", chartDataList),
-                            Chart("Light (lux)", chartDataList)
+                            Chart("Light (lux)", chartDataList),
+                            Chart("Wind and air",chartDataList)
                         )
                     )
                 }
@@ -146,6 +147,6 @@ class HomeFragment : Fragment(), DeviceClickListener {
             "Air Conditioner" -> homeViewModel.logLedStatus("ac", device.status)
             "Television" -> homeViewModel.logLedStatus("tv", device.status)
         }
-        deviceHistoryViewModel.fetchDeviceHistoryByFilters("", "All")
+        deviceHistoryViewModel.fetchDeviceHistoryByFilters("", "All","All")
     }
 }

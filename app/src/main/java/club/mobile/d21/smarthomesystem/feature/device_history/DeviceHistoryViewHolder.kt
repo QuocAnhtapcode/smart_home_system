@@ -15,15 +15,17 @@ class DeviceHistoryViewHolder(private val binding: ItemDeviceHistoryBinding) :
                 binding.name.text = "Light"
                 binding.image.setImageResource(R.drawable.ic_small_light)
             }
-
             "ac" -> {
                 binding.name.text = "Air Conditioner"
                 binding.image.setImageResource(R.drawable.ic_small_ac)
             }
-
             "tv" -> {
                 binding.name.text = "Television"
                 binding.image.setImageResource(R.drawable.ic_small_tv)
+            }
+            "warning" -> {
+                binding.name.text = "Warning triggered"
+                binding.image.setImageResource(R.drawable.ic_warning)
             }
         }
         if (deviceHistory.second.status) {

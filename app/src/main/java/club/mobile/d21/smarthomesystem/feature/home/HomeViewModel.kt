@@ -32,14 +32,17 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     private val updateDataRunnable = object : Runnable {
         override fun run() {
             fetchDataHistory(1)
+            fetchCurrentDeviceData()
+            updateWarningCount()
             handler.postDelayed(this, updateInterval)
         }
     }
     init {
         if (FirebaseManager.isUserIdSet()) {
+            //database.child("dataHistory").setValue(null)
             fetchCurrentDeviceData()
             startUpdatingData()
-            updateWarningCount(getCurrentDate())
+            updateWarningCount()
         }
         _warningCount.postValue(0)
         _combinedLiveData.addSource(_dataHistory) { data ->
@@ -99,6 +102,14 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         database.child("deviceHistory").child(timestamp.toString()).setValue(ledStatus)
             .addOnSuccessListener {
                 Log.d("HomeViewModel", "LED status logged successfully.")
+                val currentDevice = _currentDevice.value ?: DeviceStatus()
+                when (ledName) {
+                    "light" -> currentDevice.light = isOn
+                    "ac" -> currentDevice.ac = isOn
+                    "tv" -> currentDevice.tv = isOn
+                    "warning" -> currentDevice.warning = isOn
+                }
+                _currentDevice.postValue(currentDevice)
                 fetchCurrentDeviceData()
             }
             .addOnFailureListener { e ->
@@ -106,11 +117,11 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
             }
     }
 
+    /*
     fun logWarningStatus(isOn: Boolean){
         val database = FirebaseManager.getDatabaseReference()
         database.child("currentDevice").child("warning").setValue(isOn)
     }
-
     fun addWarningCount(currentDate: String,startTime: Long, endTime: Long){
         val lightExceedanceData = mapOf(
             "endTime" to endTime,
@@ -120,18 +131,20 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
             .child(startTime.toString()).push().setValue(lightExceedanceData)
         updateWarningCount(currentDate)
     }
-    private fun updateWarningCount(currentDate: String) {
-        val warningCountRef = database.child("warningCount").child(currentDate)
-        warningCountRef.get().addOnSuccessListener { snapshot ->
-            if (snapshot.exists()) {
-                val count = snapshot.childrenCount.toInt()
-                _warningCount.postValue(count)
+     */
+    private fun updateWarningCount() {
+        val warningCountRef = database.child("warningCount")
+        val currentTime = System.currentTimeMillis()
+        warningCountRef.orderByKey().startAt((currentTime - 3600000L).toString()).endAt(currentTime.toString())
+            .get().addOnSuccessListener { snapshot ->
+                if (snapshot.exists()) {
+                    val count = snapshot.childrenCount.toInt()
+                    _warningCount.postValue(count)
+                }
+            }.addOnFailureListener { error ->
+                Log.e("HomeViewModel", "Error updating warning count: ${error.message}")
             }
-        }.addOnFailureListener { error ->
-            Log.e("HomeViewModel", "Error updating warning count: ${error.message}")
-        }
     }
-
     private fun startUpdatingData() {
         handler.post(updateDataRunnable)
     }

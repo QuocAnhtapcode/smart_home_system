@@ -9,6 +9,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
+import club.mobile.d21.smarthomesystem.core.util.Util
 import club.mobile.d21.smarthomesystem.databinding.FragmentFilteredDeviceHistoryBinding
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -21,6 +22,7 @@ class FilteredDeviceHistoryDialogFragment : DialogFragment() {
     private val deviceHistoryViewModel: DeviceHistoryViewModel by activityViewModels()
 
     private var selectedDeviceType: String = "All"
+    private var selectedStatus: String = "All"
     private var selectedDate: String = ""
 
     override fun onCreateView(
@@ -37,19 +39,25 @@ class FilteredDeviceHistoryDialogFragment : DialogFragment() {
     }
 
     private fun setupDeviceTypeSpinner() {
-        val deviceTypeName = listOf("All", "Light", "AC", "TV")
+        val deviceTypeName = listOf("All", "Light", "Air Conditioner", "Television")
         val deviceTypes = listOf("All", "light", "ac", "tv")
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, deviceTypeName)
         binding.deviceTypeSpinner.adapter = adapter
-
         binding.deviceTypeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 selectedDeviceType = deviceTypes[position]
             }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {
-
+            override fun onNothingSelected(parent: AdapterView<*>) {}
+        }
+        val statusName = listOf("All", "isOn", "isOff")
+        val statusAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, statusName)
+        binding.statusSpinner.adapter = statusAdapter
+        binding.statusSpinner.onItemSelectedListener = object  : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                selectedStatus = statusName[position]
             }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
     }
 
@@ -77,7 +85,8 @@ class FilteredDeviceHistoryDialogFragment : DialogFragment() {
 
     private fun setupFilterButton() {
         binding.filterButton.setOnClickListener {
-            deviceHistoryViewModel.fetchDeviceHistoryByFilters(selectedDate,selectedDeviceType)
+            Util.isDeviceHistoryFiltered = selectedDate!="" || selectedDeviceType!="All" || selectedStatus != "All"
+            deviceHistoryViewModel.fetchDeviceHistoryByFilters(selectedDate,selectedDeviceType,selectedStatus)
         }
     }
 

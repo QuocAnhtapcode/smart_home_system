@@ -7,6 +7,7 @@ import java.util.Locale
 
 object Util {
     var isAboveThreshold = false
+    var isDeviceHistoryFiltered = false
     fun getCurrentDate(): String {
         val calendar = Calendar.getInstance()
         val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())

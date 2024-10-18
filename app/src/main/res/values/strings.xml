@@ -8,6 +8,7 @@
     <string name="light_value">%1$d</string>
     <string name="humidity_value">%1$.1f%%</string>
     <string name="temperature_value">%1$.1f°C</string>
+    <string name="good_morning">Good morning</string>
 
     <string-array name="sort_options">
         <item>Time Descending</item>

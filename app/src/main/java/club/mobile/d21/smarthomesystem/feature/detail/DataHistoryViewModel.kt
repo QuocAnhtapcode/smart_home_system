@@ -17,7 +17,8 @@ import com.google.firebase.database.ValueEventListener
 class DataHistoryViewModel(application: Application) : AndroidViewModel(application) {
     private var _dataHistory = MutableLiveData<List<Pair<Long, SensorData>>>()
     val dataHistory: LiveData<List<Pair<Long, SensorData>>> get() = _dataHistory
-
+    private var _fullDataHistory =  MutableLiveData<List<Pair<Long, SensorData>>>()
+    private val fullDataHistory get() = _fullDataHistory
     private val handler = Handler(Looper.getMainLooper())
     private val updateInterval = 10000L
 
@@ -45,8 +46,8 @@ class DataHistoryViewModel(application: Application) : AndroidViewModel(applicat
                         val value = dataSnapshot.getValue(SensorData::class.java)
                         if (key != null && value != null) key to value else null
                     }.sortedByDescending { it.first }
-
                     _dataHistory.postValue(dataHistory)
+                    _fullDataHistory.postValue(dataHistory)
                 } else {
                     Log.e("DataHistoryViewModel", "No data exists at the dataHistory reference.")
                 }
@@ -76,7 +77,7 @@ class DataHistoryViewModel(application: Application) : AndroidViewModel(applicat
         _dataHistory.postValue(sortedList)
     }
     fun performSearch(option: String, value: String) {
-        val filteredList = _dataHistory.value?.filter { (key, sensorData) ->
+        val filteredList = fullDataHistory.value?.filter { (key, sensorData) ->
             when (option) {
                 "All" -> matchesAllCriteria(Util.formatTimestamp(key), sensorData, value)
                 "Time" -> matchesTime(Util.formatTimestamp(key), value)
