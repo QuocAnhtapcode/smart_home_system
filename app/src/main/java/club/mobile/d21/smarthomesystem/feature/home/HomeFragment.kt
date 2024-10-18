@@ -55,17 +55,6 @@ class HomeFragment : Fragment(), DeviceClickListener {
                 val dataHistoryList = dataHistoryMap.mapNotNull { (key, value) ->
                     Pair(key, value)
                 }.sortedByDescending { it.first }
-                if (!isAboveThreshold && dataHistoryList[0].second.wind > 50
-                    && dataHistoryList[0].second.air > 50) {
-                    isAboveThreshold = true
-                    homeViewModel.logLedStatus("warning", true)
-                } else if (dataHistoryList[0].second.wind <= 50
-                    || dataHistoryList[0].second.air <= 50) {
-                    if(isAboveThreshold){
-                        isAboveThreshold = false
-                        homeViewModel.logLedStatus("warning", false)
-                    }
-                }
                 binding.warningCount.text = buildString {
                     append("Warning : ")
                     append(warningCount!!.toInt())

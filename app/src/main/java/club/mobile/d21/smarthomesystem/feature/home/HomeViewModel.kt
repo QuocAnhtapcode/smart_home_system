@@ -39,7 +39,6 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     }
     init {
         if (FirebaseManager.isUserIdSet()) {
-            //database.child("dataHistory").setValue(null)
             fetchCurrentDeviceData()
             startUpdatingData()
             updateWarningCount()
